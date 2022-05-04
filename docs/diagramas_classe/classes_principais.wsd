@@ -1,0 +1,27 @@
+@startuml diagramaEnaFood
+class Produto{
+    - nome: string
+    + preco: float 
+    # validade: data
+    titulo:string
+
+    + getPreco(): float
+    - getNome(): string
+    # getValidade(): data
+    verificar():bool
+}
+
+class Menu{}
+
+class Entregador{}
+
+class Fornecedor{}
+
+class Cliente{}
+
+class Pagamento{}
+
+class Pedido{}
+
+class Entrega{}
+@enduml
