@@ -1,14 +1,33 @@
 @startuml diagramaEnaFood
 class Produto{
-    - nome: string
-    + preco: float 
-    # validade: data
-    titulo:string
+    - titulo: String
+    - descricao: String
+}
 
-    + getPreco(): float
-    - getNome(): string
-    # getValidade(): data
-    verificar():bool
+class Cliente{
+    - nome de usuário: String
+}
+
+class Endereço {
+    - rua: String
+    - número: Int
+    - bairro: Bairro
+    - cidade: Cidade
+    - estado: UF
+    - cep: String
+}
+
+class UF {
+    - sigla: String
+    - nome: String
+}
+
+class Cidade{
+    - nome: String
+}
+
+class Bairro {
+    - nome: String
 }
 
 class Menu{}
@@ -17,11 +36,16 @@ class Entregador{}
 
 class Fornecedor{}
 
-class Cliente{}
 
 class Pagamento{}
 
 class Pedido{}
 
 class Entrega{}
+
+UF *-- "*" Cidade 
+Cidade *-- "*" Bairro
+Cliente "1" -- "1..*" Endereço
+Cliente "1" -- "1" Endereço : padrão
+
 @enduml
