@@ -1,7 +1,12 @@
-@startuml diagramaEnaFood
+@startuml
 class Produto{
-    - titulo: String
+    - nome: String
     - descricao: String
+    - foto:Foto
+    - preco_unitário:Float
+    - versão:Int
+    - data_ultima_alteração:Date
+
 }
 
 class Cliente{
@@ -30,22 +35,73 @@ class Bairro {
     - nome: String
 }
 
-class Menu{}
+class Menu{
+  - categoria:Categoria
+}
 
-class Entregador{}
+class Entregador{
+  - nome:String
+  - foto:Foto
+}
 
-class Fornecedor{}
+class Fornecedor{
+  - nome:String
+  + calcular_avaliação()
+}
 
 
 class Pagamento{}
 
-class Pedido{}
+class Pedido{
+  - data:Date
+  - valor_entrega:Float
+  + calcular_valor_total()
 
-class Entrega{}
+}
+
+class HistóricoDoPedido {
+  - data:Date
+  - evento:String
+}
+
+class Entrega{
+
+}
+
+class ProdutoNoPedido {
+  - quantidade:Int
+
+  + calcular_valor_total()
+  
+}
+
+class Avaliação {
+  - nota :Int
+  - descrição:String
+}
 
 UF *-- "*" Cidade 
 Cidade *-- "*" Bairro
 Cliente "1" -- "1..*" Endereço
 Cliente "1" -- "1" Endereço : padrão
+Produto "1" -- "0..*" ProdutoNoPedido
+Pedido "1" -- "1..*" ProdutoNoPedido
+Cliente "1" -- "1..*" Pedido
+Entrega "1" -- "1" Pedido
+Endereço "1" -- "1" Pedido: endereço_entrega
+Entregador "1" -- "0..*" Entrega
+Pedido "1" -- "1" Pagamento
+Menu  "1" -- "*" Produto
+Fornecedor "1" -- "1..*" Menu
+Entrega "1" -- "1" Avaliação
+Fornecedor "1" -- "0..*" Avaliação
+Pedido *-- HistóricoDoPedido
 
+note "O menu sempre estará associado \nà última versão do produto." as N1
+Produto .. N1
+N1 .. Menu
+
+note "O menu sempre estará associado \nà versão do produto no momento do pedido." as N2
+Produto .. N2
+N2 .. ProdutoNoPedido
 @enduml
