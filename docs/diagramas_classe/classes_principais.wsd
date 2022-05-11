@@ -84,8 +84,6 @@ UF *-- "*" Cidade
 Cidade *-- "*" Bairro
 Cliente "1" -- "1..*" Endereço
 Cliente "1" -- "1" Endereço : padrão
-Produto "1" -- "0..*" ProdutoNoPedido
-Pedido "1" -- "1..*" ProdutoNoPedido
 Cliente "1" -- "1..*" Pedido
 Entrega "1" -- "1" Pedido
 Endereço "1" -- "1" Pedido: endereço_entrega
@@ -96,12 +94,14 @@ Fornecedor "1" -- "1..*" Menu
 Entrega "1" -- "1" Avaliação
 Fornecedor "1" -- "0..*" Avaliação
 Pedido *-- HistóricoDoPedido
+Produto "1..*" -- "0..*" Pedido
+(Produto, Pedido) .. ProdutoNoPedido
+
 
 note "O menu sempre estará associado \nà última versão do produto." as N1
 Produto .. N1
 N1 .. Menu
 
-note "O menu sempre estará associado \nà versão do produto no momento do pedido." as N2
-Produto .. N2
+note "Sempre estará associado \nà versão do produto no momento do pedido." as N2
 N2 .. ProdutoNoPedido
 @enduml
