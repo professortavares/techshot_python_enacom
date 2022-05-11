@@ -1,0 +1,33 @@
+@startuml
+class Produto{
+    - nome: String
+    - descricao: String
+    - foto:Foto
+    - preco_unitário:Float
+    - versão:Int
+    - data_ultima_alteração:Date
+
+}
+
+
+
+class Pedido{
+  - data:Date
+  - valor_entrega:Float
+  + calcular_valor_total()
+
+}
+
+
+class ProdutoNoPedido {
+  - quantidade:Int
+
+  + calcular_valor_total()
+  
+}
+
+
+Produto "1" -- "*" ProdutoNoPedido
+Pedido "1" -- "*" ProdutoNoPedido
+
+@enduml
