@@ -1,0 +1,4 @@
+@startuml
+:Cliente: --> (Realizar pagamento)
+:Operadora de cartão: --> (Realizar pagamento)
+@enduml

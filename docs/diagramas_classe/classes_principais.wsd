@@ -20,6 +20,7 @@ class Endereço {
     - cidade: Cidade
     - estado: UF
     - cep: String
+    - complemento:String
 }
 
 class UF {
@@ -29,6 +30,10 @@ class UF {
 
 class Cidade{
     - nome: String
+}
+
+enum StatusPedido {
+   - status
 }
 
 class Bairro {
@@ -55,6 +60,7 @@ class Pagamento{}
 class Pedido{
   - data:Date
   - valor_entrega:Float
+  - status:StatusPedido
   + calcular_valor_total()
 
 }
