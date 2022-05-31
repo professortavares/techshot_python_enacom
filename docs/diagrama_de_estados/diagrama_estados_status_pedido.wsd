@@ -1,0 +1,32 @@
+@startuml
+hide empty description
+
+state c1 <<choice>>
+state c2 <<choice>>
+
+[*] --> Em_Compra
+Em_Compra --> Em_Conferência
+Em_Conferência --> Em_Compra
+Em_Conferência --> Em_Pagamento
+Em_Pagamento --> c1
+c1 --> Cartão_Invalido : [O número do cartão é inválido]
+c1 --> Cartão_Valido : [O número do cartão é válido]
+Cartão_Invalido --> Em_Pagamento
+
+Cartão_Valido --> c2
+c2 --> Cartão_Inativo : [O número do cartão é válido, porém o cartão está inativo]
+c2 --> Cartão_Ativo : [O número do cartão é válido e está ativo]
+Cartão_Inativo --> Em_Pagamento
+
+
+Cartão_Ativo --> Pagamento_Aprovado
+Pagamento_Aprovado --> Aguardando_Entrega
+
+Aguardando_Entrega --> No_caminho_para_entrega
+
+No_caminho_para_entrega --> Entrega_Realizada
+
+
+Entrega_Realizada --> [*]
+
+@enduml
