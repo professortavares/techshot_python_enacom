@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
-from src.enafood.entidades.principal.avaliacao import Avaliacao
-from src.enafood.entidades.principal.menu import Menu
+from enafood.entidades.principal.avaliacao import Avaliacao
+from enafood.entidades.principal.menu import Menu
 
 @dataclass
 class Fornecedor:

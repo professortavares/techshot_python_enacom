@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from src.enafood.entidades.localizacao.cidade import Cidade
+from enafood.entidades.localizacao.cidade import Cidade
 
 @dataclass
 class Uf:

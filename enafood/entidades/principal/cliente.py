@@ -1,6 +1,6 @@
 from dataclasses import dataclass
-from src.enafood.entidades.localizacao.endereco import Endereco
-from src.enafood.entidades.principal.pedido import Pedido
+from enafood.entidades.localizacao.endereco import Endereco
+from enafood.entidades.principal.pedido import Pedido
 
 @dataclass
 class Cliente:

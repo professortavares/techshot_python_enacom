@@ -1,6 +1,6 @@
 from dataclasses import dataclass
-from src.enafood.entidades.util.foto import Foto
-from src.enafood.entidades.principal.produto_no_pedido import ProdutoNoPedido
+from enafood.entidades.util.foto import Foto
+from enafood.entidades.principal.produto_no_pedido import ProdutoNoPedido
 
 
 @dataclass

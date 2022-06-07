@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from src.enafood.entidades.util.foto import Foto
+from enafood.entidades.util.foto import Foto
 
 @dataclass
 class Entregador:
