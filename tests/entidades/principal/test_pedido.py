@@ -28,4 +28,4 @@ Teste de unidade para o método calcular_valor_total.
     valor_total = pedido.calcular_valor_total()
 
     # asserts
-    assert valor_total == 20.0
+    assert valor_total == 30.0
