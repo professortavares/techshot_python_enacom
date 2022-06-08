@@ -1,0 +1,1 @@
+import enafood.entidades.util.foto
