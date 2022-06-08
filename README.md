@@ -1,56 +1,38 @@
-# techshot_python_enacom
-Repositório de código e modelos para o techshot python da enacom
+## Dev.:
 
-# Operações úteis com o Poetry:
-
-1. Criar o projeto:
+1. Create virtual env:
 
 ```
-poetry new enafood
+$ python -m venv enafood_env
 ```
 
-2. Instalar dependências:
+2. Activate virtual env:
 
 ```
-poetry add numpy
+$ . enafood_env/bin/activate
 ```
 
-2.1. Instalar dependências para dev:
+If you want to deactivate:
 
 ```
-poetry add faker
+$ deactivate
 ```
 
-2.2. Atualizar dependências:
+4. Install requirements:
 
 ```
-poetry update numpy
+$ pip install -r requirements.txt
 ```
 
-2.3. Usando o arquivo requeriments:
+And then...
 
 ```
-poetry add `cat requirements.txt`
+$ pip install -e .
 ```
 
-2.4. Exportar as dependências 
+
+or update (if you want to add some package):
 
 ```
-poetry export --output requirements.txt
+pip install --upgrade --force-reinstall -r requirements.txt
 ```
-
-3. Executar teste de unidade
-
-```
-poetry run pytest
-```
-
-4. Listar os envs:
-
-```
-poetry env list
-```
-
-5. Maiores informações:
-
-https://realpython.com/dependency-management-python-poetry/

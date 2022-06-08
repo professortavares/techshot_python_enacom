@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from enafood.entidades.localizacao.uf import Uf
+import enafood.entidades.localizacao as loc
 
 @dataclass
 class Cidade:
@@ -7,4 +7,4 @@ class Cidade:
     Classe que representa uma cidade.
     """
     nome:str
-    uf:Uf
+    uf:any

@@ -1,9 +1,5 @@
 from dataclasses import dataclass
 
-from enafood.entidades.localizacao.bairro import Bairro
-from enafood.entidades.localizacao.cidade import Cidade
-from enafood.entidades.localizacao.uf import Uf
-
 @dataclass
 class Endereco:
     """
@@ -11,9 +7,9 @@ class Endereco:
     """
     rua: str
     numero: int
-    bairro: Bairro
-    cidade: Cidade
-    estado: Uf
+    bairro:any
+    cidade:any
+    estado:any
     cep: str
     # este complemento nem sempre é necessário no endereço
     complemento: str = None

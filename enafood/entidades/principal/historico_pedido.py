@@ -1,8 +1,8 @@
 from dataclasses import dataclass
-from enafood.entidades.principal.pedido import Pedido
+import enafood.entidades.principal as prinp
 
 @dataclass
 class HistoricoDoPedido:
     data: str
     evento: str
-    pedido: Pedido
+    pedido: any
