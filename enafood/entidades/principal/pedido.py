@@ -23,4 +23,4 @@ class Pedido:
         for produto_no_pedido in self.produtos:
             valor_total += produto_no_pedido.calcular_valor_total()
 
-        return valor_total
+        return valor_total + self.valor_entrega
