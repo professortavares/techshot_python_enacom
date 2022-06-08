@@ -10,7 +10,7 @@ def test_exemplo():
 def test_criar_entidade():
     # setup (criação do objeto)
     fake = Faker()
-    cliente = Cliente(nome=fake.name(), )
+    cliente = Cliente(nome=fake.name())
 
     assert cliente.nome is not None
 

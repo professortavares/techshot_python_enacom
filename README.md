@@ -36,3 +36,8 @@ or update (if you want to add some package):
 ```
 pip install --upgrade --force-reinstall -r requirements.txt
 ```
+
+3. Test coverage:
+
+```
+pytest --cov-report html:cov_html --cov=enafood tests/
