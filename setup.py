@@ -9,5 +9,5 @@ setup(
     name='enafood',
     packages=find_packages(include=['enafood', 'enafood.*']),
     url='https://github.com/professortavares/techshot_python_enacom',
-    version='0.1.1',
+    version='0.1.2',
 )

@@ -131,4 +131,5 @@ dmypy.json
 # Pycharm project settings
 .idea/
 
+# pacote relacionado com o ambiente virtual
 enafood_env/
