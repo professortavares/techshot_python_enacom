@@ -1,8 +1,11 @@
+import pytest
 from faker import Faker
 
 from enafood.entidades.principal.produto import Produto
 from enafood.entidades.principal.produto_no_pedido import ProdutoNoPedido
 from enafood.entidades.principal.pedido import Pedido
+from enafood.entidades.principal.status_pedido import StatusPedido
+from enafood.excecoes.excecao_alteracao_status_invalida import ExcecaoAlteracaoDeStatusInvalida
 
 def test_calcular_valor_total_sucesso():
     """
@@ -29,3 +32,134 @@ Teste de unidade para o método calcular_valor_total.
 
     # asserts
     assert valor_total == 30.0
+
+
+def test_status_inicial_pedido():
+    """
+    Teste de unidade para o método status_inicial_pedido.
+    Aqui eu espero que o status inicial do pedido seja EM_COMPRA.
+    Aqui estou testando o caminho feliz, ou seja, o status inicial é o esperado.
+
+    :return: None
+    """
+
+    # setup
+    pedido = Pedido(data="01/01/2020",
+                    valor_entrega=10.0,
+                    produtos=[])
+    # execução
+    status_inicial = pedido.status
+
+    # asserts
+    assert status_inicial == StatusPedido.EM_COMPRA
+
+def test_alterar_status_pedido_em_compra_para_em_conferencia():
+    """
+    Teste de unidade para o método alterar_status_pedido.
+    Aqui eu espero que o status do pedido seja alterado para EM_CONFERENCIA.
+    Aqui estou testando o caminho feliz, ou seja, o status é alterado com sucesso.
+
+    :return: None
+    """
+
+    # setup
+    fake = Faker()
+    produto = Produto(nome=fake.name(),
+                      descricao=fake.text(),
+                      preco_unitario=10.0)
+    produto_no_pedido01 = ProdutoNoPedido(quantidade=2,
+                                        produto=produto)
+
+    pedido = Pedido(data="01/01/2020",
+                    valor_entrega=10.0,
+                    produtos=[produto_no_pedido01])
+
+    # execução
+    pedido.alterar_status_pedido(StatusPedido.EM_CONFERENCIA)
+
+    # asserts
+    assert pedido.status == StatusPedido.EM_CONFERENCIA
+
+def test_alterar_status_pedido_em_conferencia_para_em_compra():
+    """
+    Teste de unidade para o método alterar_status_pedido.
+    Aqui eu espero que o status do pedido seja alterado para EM_COMPRA.
+    Aqui estou testando o caminho feliz, ou seja, o status é alterado com sucesso.
+
+    :return: None
+    """
+
+    # setup
+    fake = Faker()
+    produto = Produto(nome=fake.name(),
+                      descricao=fake.text(),
+                      preco_unitario=10.0)
+    produto_no_pedido01 = ProdutoNoPedido(quantidade=2,
+                                        produto=produto)
+
+    pedido = Pedido(data="01/01/2020",
+                    valor_entrega=10.0,
+                    produtos=[produto_no_pedido01])
+
+    pedido.alterar_status_pedido(StatusPedido.EM_CONFERENCIA)
+
+    # execução
+    pedido.alterar_status_pedido(StatusPedido.EM_COMPRA)
+
+    # asserts
+    assert pedido.status == StatusPedido.EM_COMPRA
+
+def test_alterar_status_pedido_em_compra_para_em_pagamento():
+    """
+    Teste de unidade para o método alterar_status_pedido.
+    Aqui eu espero que o status do pedido seja alterado para EM_PAGAMENTO.
+    Aqui estou testando o caminho alternativo, ou seja, o status não é alterado
+    e a exceção é levantada.
+
+    :return: None
+    """
+
+    # setup
+    fake = Faker()
+    produto = Produto(nome=fake.name(),
+                      descricao=fake.text(),
+                      preco_unitario=10.0)
+    produto_no_pedido01 = ProdutoNoPedido(quantidade=2,
+                                        produto=produto)
+
+    pedido = Pedido(data="01/01/2020",
+                    valor_entrega=10.0,
+                    produtos=[produto_no_pedido01])
+
+
+    with pytest.raises(ExcecaoAlteracaoDeStatusInvalida):
+        # execução
+        pedido.alterar_status_pedido(StatusPedido.EM_PAGAMENTO)
+
+def test_alterar_status_pedido_em_conferencia_para_cartao_valido():
+    """
+    Teste de unidade para o método alterar_status_pedido.
+    Aqui eu espero que o status do pedido seja alterado para CARTÃO_VALIDO.
+    Aqui estou testando o caminho alternativo, ou seja, o status não é alterado
+    e a exceção é levantada.
+
+    :return: None
+    """
+
+    # setup
+    fake = Faker()
+    produto = Produto(nome=fake.name(),
+                      descricao=fake.text(),
+                      preco_unitario=10.0)
+    produto_no_pedido01 = ProdutoNoPedido(quantidade=2,
+                                        produto=produto)
+
+    pedido = Pedido(data="01/01/2020",
+                    valor_entrega=10.0,
+                    produtos=[produto_no_pedido01])
+
+    pedido.alterar_status_pedido(StatusPedido.EM_CONFERENCIA)
+
+    # execução
+    with pytest.raises(ExcecaoAlteracaoDeStatusInvalida):
+        pedido.alterar_status_pedido(StatusPedido.CARTAO_VALIDO)

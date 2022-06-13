@@ -41,3 +41,4 @@ pip install --upgrade --force-reinstall -r requirements.txt
 
 ```
 pytest --cov-report html:cov_html --cov=enafood tests/
+```

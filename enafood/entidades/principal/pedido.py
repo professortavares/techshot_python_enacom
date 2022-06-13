@@ -1,5 +1,6 @@
 from dataclasses import dataclass
-import enafood.entidades.principal as prinp
+from enafood.entidades.principal.status_pedido import StatusPedido
+from enafood.excecoes.excecao_alteracao_status_invalida import ExcecaoAlteracaoDeStatusInvalida
 
 @dataclass
 class Pedido:
@@ -9,7 +10,8 @@ class Pedido:
     pagamento: any=None
     historico: list[any]=None
     cliente: any=None
-    status: any=None
+    #TODO: débito técnico: criar uma propriedade para este atributo
+    status: StatusPedido=StatusPedido.EM_COMPRA
 
     # Débito técnico
     # TODO: rever a obrigatoriedade dos campos
@@ -24,3 +26,21 @@ class Pedido:
             valor_total += produto_no_pedido.calcular_valor_total()
 
         return valor_total + self.valor_entrega
+
+    def alterar_status_pedido(self, novo_status):
+        """
+        Altera o status do pedido
+        :param novo_status: StatusPedido - novo status do pedido
+        :return: None
+        """
+
+        # fluxo para o status EM_COMPRA
+        if self.status == StatusPedido.EM_COMPRA:
+            if novo_status != StatusPedido.EM_CONFERENCIA:
+                raise ExcecaoAlteracaoDeStatusInvalida(status_pedido_atual=self.status, status_pedido_novo=novo_status)
+        # fluxo para o status EM_CONFERENCIA
+        elif self.status == StatusPedido.EM_CONFERENCIA:
+            if novo_status != StatusPedido.EM_COMPRA:
+                raise ExcecaoAlteracaoDeStatusInvalida(status_pedido_atual=self.status, status_pedido_novo=novo_status)
+
+        self.status = novo_status
