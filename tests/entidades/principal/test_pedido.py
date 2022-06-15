@@ -6,6 +6,7 @@ from enafood.entidades.principal.produto_no_pedido import ProdutoNoPedido
 from enafood.entidades.principal.pedido import Pedido
 from enafood.entidades.principal.status_pedido import StatusPedido
 from enafood.excecoes.excecao_alteracao_status_invalida import ExcecaoAlteracaoDeStatusInvalida
+from enafood.excecoes.excecao_pedido_vazio import ExcecaoPedidoVazio
 
 def test_calcular_valor_total_sucesso():
     """
@@ -163,3 +164,52 @@ def test_alterar_status_pedido_em_conferencia_para_cartao_valido():
     # execução
     with pytest.raises(ExcecaoAlteracaoDeStatusInvalida):
         pedido.alterar_status_pedido(StatusPedido.CARTAO_VALIDO)
+
+
+def test_conferir_pedido_sucesso():
+    """
+    Teste de unidade para o método conferir_pedido.
+    Aqui eu espero que o status do pedido seja alterado para EM CONFERÊNCIA.
+    Aqui estou testando o caminho feliz, ou seja, o status é alterado com sucesso.
+
+    :return: None
+    """
+
+    # setup
+    fake = Faker()
+    produto = Produto(nome=fake.name(),
+                      descricao=fake.text(),
+                      preco_unitario=10.0)
+    produto_no_pedido01 = ProdutoNoPedido(quantidade=2,
+                                        produto=produto)
+
+    pedido = Pedido(data="01/01/2020",
+                    valor_entrega=10.0,
+                    produtos=[produto_no_pedido01])
+
+    # execução
+    pedido.conferir_pedido()
+
+    # asserts
+    assert pedido.status == StatusPedido.EM_CONFERENCIA
+
+
+def test_conferir_pedido_vazio():
+    """
+    Teste de unidade para o método conferir_pedido.
+    Aqui eu espero que seja levanta uma exceção me informando
+    que o pedido está vazio.
+
+    :return: None
+    """
+
+    # setup
+    pedido = Pedido(data="01/01/2020",
+                    valor_entrega=10.0,
+                    produtos=[])
+
+    with pytest.raises(ExcecaoPedidoVazio):
+        # execução
+        pedido.conferir_pedido()
+
+    assert pedido.status == StatusPedido.EM_COMPRA
