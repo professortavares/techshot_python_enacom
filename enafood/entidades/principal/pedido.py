@@ -1,15 +1,17 @@
 from dataclasses import dataclass
 from enafood.entidades.principal.status_pedido import StatusPedido
+from enafood.entidades.principal.historico_pedido import HistoricoDoPedido
 from enafood.excecoes.excecao_alteracao_status_invalida import ExcecaoAlteracaoDeStatusInvalida
 from enafood.excecoes.excecao_pedido_vazio import ExcecaoPedidoVazio
+from datetime import datetime
 
 @dataclass
 class Pedido:
     data: str
     valor_entrega:float
     produtos: list[any]
-    pagamento: any=None
     historico: list[any]=None
+    pagamento: any=None
     cliente: any=None
     #TODO: débito técnico: criar uma propriedade para este atributo
     status: StatusPedido=StatusPedido.EM_COMPRA
@@ -28,6 +30,19 @@ class Pedido:
 
         return valor_total + self.valor_entrega
 
+    def voltar_pedido_em_compra(self):
+        """
+        Volta o status do pedido para em compra
+        :return:
+        """
+        self.alterar_status_pedido(StatusPedido.EM_COMPRA)
+
+        # registrar no histórico
+        evento = "O seu pedido voltou o status para em compra"
+        self.registrar_historico(evento, datetime.now(),
+                                 StatusPedido.EM_COMPRA)
+
+
     def conferir_pedido(self):
         """
         Altera o status do pedido para Em Conferencia
@@ -39,6 +54,11 @@ class Pedido:
             raise ExcecaoPedidoVazio()
 
         self.alterar_status_pedido(StatusPedido.EM_CONFERENCIA)
+        # registrar no histórico
+        evento = "O seu pedido está em conferência..."
+        self.registrar_historico(evento, datetime.now(),
+                                 StatusPedido.EM_CONFERENCIA)
+
 
     def alterar_status_pedido(self, novo_status):
         """
@@ -67,3 +87,13 @@ class Pedido:
 
         # se estiver tudo certo, então altera o status
         self.status = novo_status
+
+    def registrar_historico(self, evento, data, status_atual):
+        if self.historico is None:
+            self.historico = []
+
+        hist = HistoricoDoPedido(data=data.strftime("%d/%m/%Y %H:%M:%S"),
+                                 evento=evento,
+                                 status=status_atual)
+        self.historico.append(hist)
+

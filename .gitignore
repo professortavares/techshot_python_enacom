@@ -133,3 +133,6 @@ dmypy.json
 
 # pacote relacionado com o ambiente virtual
 enafood_env/
+
+# VScode project settings
+.vscode/

@@ -75,11 +75,21 @@ def test_alterar_status_pedido_em_compra_para_em_conferencia():
                     valor_entrega=10.0,
                     produtos=[produto_no_pedido01])
 
+    # pre assert
+    assert pedido.historico is None, "É esperado que o pedido não tenha histórico"
+
     # execução
-    pedido.alterar_status_pedido(StatusPedido.EM_CONFERENCIA)
+    pedido.conferir_pedido()
 
     # asserts
     assert pedido.status == StatusPedido.EM_CONFERENCIA
+
+    assert pedido.historico is not None, "É esperado que o pedido tenha o histórico inicializado"
+    assert len(pedido.historico) == 1, "É esperado que o pedido tenha 1 evento no seu histórico"
+    ultimo_evento = pedido.historico[-1]
+    assert ultimo_evento.status == StatusPedido.EM_CONFERENCIA, "É esperado que o último evento seja a conferência do pedido"
+
+
 
 def test_alterar_status_pedido_em_conferencia_para_em_compra():
     """
@@ -102,13 +112,19 @@ def test_alterar_status_pedido_em_conferencia_para_em_compra():
                     valor_entrega=10.0,
                     produtos=[produto_no_pedido01])
 
-    pedido.alterar_status_pedido(StatusPedido.EM_CONFERENCIA)
+    pedido.conferir_pedido()
 
     # execução
-    pedido.alterar_status_pedido(StatusPedido.EM_COMPRA)
+    pedido.voltar_pedido_em_compra()
 
     # asserts
     assert pedido.status == StatusPedido.EM_COMPRA
+
+    assert pedido.historico is not None, "É esperado que o pedido tenha o histórico inicializado"
+    assert len(pedido.historico) == 2, "É esperado que o pedido tenha 1 evento no seu histórico"
+    ultimo_evento = pedido.historico[-1]
+    assert ultimo_evento.status == StatusPedido.EM_COMPRA, "É esperado que o último evento seja a conferência do pedido"
+
 
 def test_alterar_status_pedido_em_compra_para_em_pagamento():
     """
