@@ -1,16 +1,13 @@
 import pytest
-from faker import Faker
-
-from enafood.entidades.principal.produto import Produto
-from enafood.entidades.principal.produto_no_pedido import ProdutoNoPedido
-from enafood.entidades.principal.pedido import Pedido
 from enafood.entidades.principal.status_pedido import StatusPedido
 from enafood.excecoes.excecao_alteracao_status_invalida import ExcecaoAlteracaoDeStatusInvalida
 from enafood.excecoes.excecao_pedido_vazio import ExcecaoPedidoVazio
 
+from tests.fabricas.entidades.fabrica_pedido import FabricaPedido
+
 def test_calcular_valor_total_sucesso():
     """
-Teste de unidade para o método calcular_valor_total.
+    Teste de unidade para o método calcular_valor_total.
     Aqui eu espero que o valor total seja igual ao preço unitário de cada pedido multiplicado pela quantidade.
     Aqui estou testando o caminho feliz, ou seja, o cálculo é feito conforme esperado.
 
@@ -18,16 +15,8 @@ Teste de unidade para o método calcular_valor_total.
     """
 
     # setup
-    fake = Faker()
-    produto = Produto(nome=fake.name(),
-                      descricao=fake.text(),
-                      preco_unitario=10.0)
-    produto_no_pedido01 = ProdutoNoPedido(quantidade=2,
-                                        produto=produto)
+    pedido = FabricaPedido().fabricar_pedido_com_1_produto()
 
-    pedido = Pedido(data="01/01/2020",
-                    valor_entrega=10.0,
-                    produtos=[produto_no_pedido01])
     # execução
     valor_total = pedido.calcular_valor_total()
 
@@ -45,9 +34,8 @@ def test_status_inicial_pedido():
     """
 
     # setup
-    pedido = Pedido(data="01/01/2020",
-                    valor_entrega=10.0,
-                    produtos=[])
+    pedido = FabricaPedido().fabricar_pedido_com_1_produto()
+
     # execução
     status_inicial = pedido.status
 
@@ -64,16 +52,7 @@ def test_alterar_status_pedido_em_compra_para_em_conferencia():
     """
 
     # setup
-    fake = Faker()
-    produto = Produto(nome=fake.name(),
-                      descricao=fake.text(),
-                      preco_unitario=10.0)
-    produto_no_pedido01 = ProdutoNoPedido(quantidade=2,
-                                        produto=produto)
-
-    pedido = Pedido(data="01/01/2020",
-                    valor_entrega=10.0,
-                    produtos=[produto_no_pedido01])
+    pedido = FabricaPedido().fabricar_pedido_com_1_produto()
 
     # pre assert
     assert pedido.historico is None, "É esperado que o pedido não tenha histórico"
@@ -101,18 +80,7 @@ def test_alterar_status_pedido_em_conferencia_para_em_compra():
     """
 
     # setup
-    fake = Faker()
-    produto = Produto(nome=fake.name(),
-                      descricao=fake.text(),
-                      preco_unitario=10.0)
-    produto_no_pedido01 = ProdutoNoPedido(quantidade=2,
-                                        produto=produto)
-
-    pedido = Pedido(data="01/01/2020",
-                    valor_entrega=10.0,
-                    produtos=[produto_no_pedido01])
-
-    pedido.conferir_pedido()
+    pedido = FabricaPedido().fabricar_pedido_status_em_conferencia()
 
     # execução
     pedido.voltar_pedido_em_compra()
@@ -137,17 +105,7 @@ def test_alterar_status_pedido_em_compra_para_em_pagamento():
     """
 
     # setup
-    fake = Faker()
-    produto = Produto(nome=fake.name(),
-                      descricao=fake.text(),
-                      preco_unitario=10.0)
-    produto_no_pedido01 = ProdutoNoPedido(quantidade=2,
-                                        produto=produto)
-
-    pedido = Pedido(data="01/01/2020",
-                    valor_entrega=10.0,
-                    produtos=[produto_no_pedido01])
-
+    pedido = FabricaPedido().fabricar_pedido_com_1_produto()
 
     with pytest.raises(ExcecaoAlteracaoDeStatusInvalida):
         # execução
@@ -164,18 +122,7 @@ def test_alterar_status_pedido_em_conferencia_para_cartao_valido():
     """
 
     # setup
-    fake = Faker()
-    produto = Produto(nome=fake.name(),
-                      descricao=fake.text(),
-                      preco_unitario=10.0)
-    produto_no_pedido01 = ProdutoNoPedido(quantidade=2,
-                                        produto=produto)
-
-    pedido = Pedido(data="01/01/2020",
-                    valor_entrega=10.0,
-                    produtos=[produto_no_pedido01])
-
-    pedido.alterar_status_pedido(StatusPedido.EM_CONFERENCIA)
+    pedido = FabricaPedido().fabricar_pedido_status_em_conferencia()
 
     # execução
     with pytest.raises(ExcecaoAlteracaoDeStatusInvalida):
@@ -192,16 +139,7 @@ def test_conferir_pedido_sucesso():
     """
 
     # setup
-    fake = Faker()
-    produto = Produto(nome=fake.name(),
-                      descricao=fake.text(),
-                      preco_unitario=10.0)
-    produto_no_pedido01 = ProdutoNoPedido(quantidade=2,
-                                        produto=produto)
-
-    pedido = Pedido(data="01/01/2020",
-                    valor_entrega=10.0,
-                    produtos=[produto_no_pedido01])
+    pedido = FabricaPedido().fabricar_pedido_com_1_produto()
 
     # execução
     pedido.conferir_pedido()
@@ -220,9 +158,7 @@ def test_conferir_pedido_vazio():
     """
 
     # setup
-    pedido = Pedido(data="01/01/2020",
-                    valor_entrega=10.0,
-                    produtos=[])
+    pedido = FabricaPedido().fabricar_objeto_basico()
 
     with pytest.raises(ExcecaoPedidoVazio):
         # execução

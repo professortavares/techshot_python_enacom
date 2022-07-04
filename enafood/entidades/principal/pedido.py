@@ -3,6 +3,7 @@ from enafood.entidades.principal.status_pedido import StatusPedido
 from enafood.entidades.principal.historico_pedido import HistoricoDoPedido
 from enafood.excecoes.excecao_alteracao_status_invalida import ExcecaoAlteracaoDeStatusInvalida
 from enafood.excecoes.excecao_pedido_vazio import ExcecaoPedidoVazio
+from enafood.entidades.principal.produto_no_pedido import ProdutoNoPedido
 from datetime import datetime
 
 @dataclass
@@ -18,6 +19,18 @@ class Pedido:
 
     # Débito técnico
     # TODO: rever a obrigatoriedade dos campos
+
+    def adicionar_produto(self, produto, quantidade):
+        """
+        Adiciona um produto ao pedido
+        :param produto:
+        :return:
+        """
+        if self.produtos is None:
+            self.produtos = []
+
+        produto_no_pedido = ProdutoNoPedido(produto=produto, quantidade=quantidade)
+        self.produtos.append(produto_no_pedido)
 
     def calcular_valor_total(self):
         """
