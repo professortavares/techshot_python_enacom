@@ -55,7 +55,32 @@ class Fornecedor{
 }
 
 
-class Pagamento{}
+abstract class Pagamento{
+  + realizar_pagamento()
+}
+
+class Cartao{
+    - numero:String
+    - nome_do_titular:String
+    - data_de_validade:Date
+    - cvv:Int
+}
+
+class Cupom {
+    - numero_cupom:String
+}
+
+class CartaoCredito{
+}
+
+class CartaoDebito {
+}
+
+class ValeRefeicao{
+}
+
+class ValeAlimentacao{
+}
 
 class Pedido{
   - data:Date
@@ -102,7 +127,12 @@ Fornecedor "1" -- "0..*" Avaliação
 Pedido *-- HistóricoDoPedido
 Produto "1..*" -- "0..*" Pedido
 (Produto, Pedido) .. ProdutoNoPedido
-
+Pagamento <|-- Cartao
+Cartao <|-- CartaoCredito
+Cartao <|-- CartaoDebito
+Cartao <|-- ValeRefeicao
+Cartao <|-- ValeAlimentacao
+Pagamento <|-- Cupom
 
 note "O menu sempre estará associado \nà última versão do produto." as N1
 Produto .. N1
